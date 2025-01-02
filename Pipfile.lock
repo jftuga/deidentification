@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "4c2aeef884db89674acdb181d63b3159e004fb6c9c5586ed817934ee1ae6bbb5"
+            "sha256": "35ac15561ddcd8b868c87636f848a64287f18d5fe48569727cb1800f8bdcc6fb"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -204,6 +204,14 @@
             ],
             "markers": "python_version >= '3.8'",
             "version": "==0.20.0"
+        },
+        "colorama": {
+            "hashes": [
+                "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44",
+                "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"
+            ],
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6'",
+            "version": "==0.4.6"
         },
         "confection": {
             "hashes": [
@@ -857,6 +865,14 @@
             "markers": "python_version >= '3.8'",
             "version": "==1.13.1"
         },
+        "termcolor": {
+            "hashes": [
+                "sha256:37b17b5fc1e604945c2642c872a3764b5d547a48009871aea3edd3afa180afb8",
+                "sha256:998d8d27da6d48442e8e1f016119076b690d962507531df4890fcd2db2ef8a6f"
+            ],
+            "markers": "python_version >= '3.9'",
+            "version": "==2.5.0"
+        },
         "thinc": {
             "hashes": [
                 "sha256:131f51ed1936073b6b11639d1981748094186f7de2bc8f0a4e45c5d451c59331",
@@ -939,6 +955,10 @@
             ],
             "markers": "python_version >= '3.9'",
             "version": "==2.3.0"
+        },
+        "veryprettytable": {
+            "git": "https://github.com/andrewspiers/VeryPrettyTable.git",
+            "ref": "46044283a863d66b6fb2d9deb7a91f80fb1458be"
         },
         "wasabi": {
             "hashes": [
@@ -1066,14 +1086,6 @@
             "markers": "python_version >= '3.7'",
             "version": "==8.1.8"
         },
-        "colorama": {
-            "hashes": [
-                "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44",
-                "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"
-            ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6'",
-            "version": "==0.4.6"
-        },
         "mypy-extensions": {
             "hashes": [
                 "sha256:4392f6c0eb8a5668a69e23d168ffa70f0be9ccfd32b5cc2d26a34ae5b844552d",
@@ -1130,18 +1142,6 @@
             "index": "pypi",
             "markers": "python_version >= '3.7'",
             "version": "==0.8.4"
-        },
-        "termcolor": {
-            "hashes": [
-                "sha256:37b17b5fc1e604945c2642c872a3764b5d547a48009871aea3edd3afa180afb8",
-                "sha256:998d8d27da6d48442e8e1f016119076b690d962507531df4890fcd2db2ef8a6f"
-            ],
-            "markers": "python_version >= '3.9'",
-            "version": "==2.5.0"
-        },
-        "veryprettytable": {
-            "git": "https://github.com/andrewspiers/VeryPrettyTable.git",
-            "ref": "46044283a863d66b6fb2d9deb7a91f80fb1458be"
         }
     }
 }

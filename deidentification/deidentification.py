@@ -32,7 +32,6 @@ from .deidentification_constants import bcolors, GENDER_PRONOUNS, HTML_BEGIN, HT
 from .deidentification_constants import pgmName, pgmUrl, pgmVersion
 from .normalize_punctuation import normalize_punctuation
 import spacy
-import spacy
 from spacy.tokens import Doc
 import sys
 
@@ -47,6 +46,8 @@ class DeidentificationConfig:
     output_style: DeidentificationOutputStyle = DeidentificationOutputStyle.TEXT
     replacement: str = "PERSON"
     debug: bool = False
+    save_tokens: bool = False
+    filename: Optional[str] = None
 
     def __str__(self) -> str:
         return "\n".join(f"- {field.name:<15} = {getattr(self, field.name)}"
@@ -64,9 +65,16 @@ class Deidentification:
         """
         self.config = config
         self.all_persons: list[dict] = []
+
+        # this combines all self.all_persons lists from multiple passes of self._find_all_persons()
+        self.aggregate_persons: list[dict] = []
+
         self.all_pronouns: list[dict] = []
         self.doc: Optional[Doc] = None
         self.table_class  = None
+
+        # used by self.get_identified_elements()
+        self.replaced_text = None
 
         if self.config.debug:
             from veryprettytable import VeryPrettyTable
@@ -134,6 +142,8 @@ class Deidentification:
             self.all_pronouns = []
             merged = self._merge_metadata()
             replaced_text = self._replace_merged(replaced_text, merged)
+
+        self.replaced_text = replaced_text
         return replaced_text
 
     def deidentify_with_wrapped_html(self, text: str, html_begin: str = HTML_BEGIN, html_end:str = HTML_END) -> str:
@@ -155,6 +165,10 @@ class Deidentification:
         buffer.write(body)
         buffer.write(html_end)
         return buffer.getvalue()
+
+    def get_identified_elements(self) -> dict:
+        elements = {"message": self.replaced_text, "entities": self.aggregate_persons, "pronouns": self.all_pronouns}
+        return elements
 
     def _find_all_persons(self) -> int:
         """Find all person entities in the current document.
@@ -179,6 +193,7 @@ class Deidentification:
                     continue
                 record = {"text": ent.text, "start_char": ent.start_char, "end_char": ent.end_char, "label": ent.label_, "shapes": [token.shape_ for token in ent]}
                 self.all_persons.append(record)
+        self.aggregate_persons.extend(self.all_persons)
         return len(self.all_persons)
 
     def _find_all_pronouns(self) -> int:

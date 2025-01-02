@@ -36,7 +36,29 @@ pip install VeryPrettyTable
 
 ## Usage
 
-### Basic Usage
+### Command Line Interface
+
+The package includes a command-line tool for quick de-identification of text files:
+
+```bash
+python -m deidentification.deidentify input_file [options]
+```
+
+Options:
+- `-r, --replacement TEXT`: Specify replacement text for identified names (default: "PERSON")
+- `-o, --output FILE`: Output file (defaults to stdout)
+- `-H, --html`: Output in HTML format with highlighted replacements
+- `-d, --debug`: Enable debug mode
+- `-t, --tokens`: Save identified elements to a JSON file (filename--tokens.json)
+- `-v, --version`: Display version information
+
+Example:
+```bash
+# De-identify a text file and save with HTML markup
+python -m deidentification.deidentify input.txt -H -o output.html -r "[REDACTED]"
+```
+
+### Python API Usage
 
 ```python
 from deidentification import Deidentification

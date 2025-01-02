@@ -1,3 +1,8 @@
 [build-system]
 requires = ["setuptools>=45", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 140
+target-version = ['py312']
+skip_magic_trailing_comma = true

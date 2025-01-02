@@ -1,6 +1,6 @@
 pgmName = "deidentification"
 pgmUrl = "https://github.com/jftuga/deidentification"
-pgmVersion = "1.0.0"
+pgmVersion = "1.1.0"
 
 GENDER_PRONOUNS = {
     "he": "HE/SHE",
@@ -81,3 +81,4 @@ class bcolors:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
+

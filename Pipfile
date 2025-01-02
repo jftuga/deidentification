@@ -6,12 +6,12 @@ name = "pypi"
 [dev-packages]
 black = "*"
 ruff = "*"
-veryprettytable = {git = "https://github.com/andrewspiers/VeryPrettyTable.git"}
 
 [packages]
 chardet = ">=5.2.0"
 spacy = ">=3.8.3"
 torch = ">=2.5.1"
+veryprettytable = {git = "https://github.com/andrewspiers/VeryPrettyTable.git"}
 
 [requires]
 python_version = "3.12"
