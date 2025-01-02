@@ -1,2 +1,116 @@
-# deidentification
-Deidentify people's names and gender specific pronouns
+# Deidentification
+
+A Python module that removes personally identifiable information (PII) from text documents, focusing on personal names and gender-specific pronouns. This tool uses spaCy's Named Entity Recognition (NER) capabilities combined with custom pronoun handling to provide thorough text de-identification.
+
+## Key Features
+
+- Accurately identifies and replaces personal names using spaCy's NER
+- Handles gender-specific pronouns with customizable replacements
+- Supports both plain text and HTML output formats
+- Uses an optimized backward-processing strategy for accurate text replacements
+- Iterative processing ensures comprehensive PII removal
+- Configurable replacement tokens and debug output
+- GPU acceleration support through spaCy
+
+## Installation
+
+```bash
+pip install git+https://github.com/jftuga/deidentification.git
+```
+
+### Requirements
+
+- Python 3.7 or higher
+- spaCy
+- spaCy's `en_core_web_trf` model (or another compatible model)
+
+Download the required spaCy model:
+```bash
+python -m spacy download en_core_web_trf
+```
+
+For debugging, by setting `config.debug=True`, you will also need [VeryPrettyTable](https://github.com/smeggingsmegger/):
+```bash
+pip install VeryPrettyTable
+```
+
+## Usage
+
+### Basic Usage
+
+```python
+from deidentification import Deidentification
+
+# Create a deidentification instance with default settings
+deidentifier = Deidentification()
+
+# Process text
+text = "John Smith went to the store. He bought some groceries."
+deidentified_text = deidentifier.deidentify(text)
+print(deidentified_text)
+# Output: "PERSON went to the store. HE/SHE bought some groceries."
+```
+
+### HTML Output
+
+```python
+# Generate HTML output with highlighted replacements
+html_output = deidentifier.deidentify_with_wrapped_html(text)
+```
+
+### Custom Configuration
+
+```python
+from deidentification import (
+    Deidentification,
+    DeidentificationConfig,
+    DeidentificationOutputStyle,
+)
+
+config = DeidentificationConfig(
+    spacy_model="en_core_web_trf",
+    output_style=DeidentificationOutputStyle.HTML,
+    replacement="[REDACTED]",
+    debug=True
+)
+deidentifier = Deidentification(config)
+```
+
+## Configuration Options
+
+The `DeidentificationConfig` class supports the following options:
+
+- `spacy_load` (bool): Whether to load the spaCy model (default: True)
+- `spacy_model` (str): Name of the spaCy model to use (default: "en_core_web_trf")
+- `output_style` (DeidentificationOutputStyle): Output format - TEXT or HTML (default: TEXT)
+- `replacement` (str): Replacement text for identified names (default: "PERSON")
+- `debug` (bool): Enable debug output (default: False)
+
+## How It Works
+
+The de-identification process follows these steps:
+
+1. Text is normalized for consistent processing
+2. spaCy processes the text to identify person entities
+3. Gender-specific pronouns are identified using a predefined list
+4. Entities and pronouns are sorted by their position in reverse order
+5. Replacements are made from end to beginning to maintain position accuracy
+6. The process repeats until no new entities are detected
+
+The backward-processing strategy is key to accurate replacements, as it prevents position shifts from affecting subsequent replacements.
+
+## Debug Output
+
+When debug mode is enabled, the tool provides detailed information about:
+- Identified person entities
+- Found pronouns
+- Replacement positions and actions
+- Processing iterations
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
