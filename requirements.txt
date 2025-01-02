@@ -1,0 +1,4 @@
+chardet~=5.2.0
+veryprettytable~=0.8.1
+spacy~=3.8.3
+torch~=2.5.1
