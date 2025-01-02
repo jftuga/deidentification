@@ -38,7 +38,9 @@ setup(
     python_requires=">=3.7",
     install_requires=[
         "spacy>=3.0.0",
-        "torch",
+        "torch>=2.5.1",
+        "chardet>=5.2.0",
+        "veryprettytable>=0.8.1",
     ],
     entry_points={
         "console_scripts": [
