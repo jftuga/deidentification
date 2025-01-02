@@ -14,7 +14,7 @@ setup(
     name="deidentification",
     version=pgmVersion,
     author="John Taylor",
-    author_email="",  # Add your email if you wish
+    author_email="",
     description="A Python module for de-identifying personally identifiable information in text",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -31,6 +31,7 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
         "Topic :: Text Processing",
         "Topic :: Security",
     ],
