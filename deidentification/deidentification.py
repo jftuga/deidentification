@@ -171,7 +171,7 @@ class Deidentification:
         return buffer.getvalue()
 
     def get_identified_elements(self) -> dict:
-        elements = {"message": self.replaced_text, "entities": self.aggregate_persons, "pronouns": self.aggregate_pronouns}
+        elements = {"message": self.text, "entities": self.aggregate_persons, "pronouns": self.aggregate_pronouns}
         return elements
 
     def _find_all_persons(self) -> int:
