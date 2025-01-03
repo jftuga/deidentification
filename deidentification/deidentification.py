@@ -69,6 +69,9 @@ class Deidentification:
         # this combines all self.all_persons lists from multiple passes of self._find_all_persons()
         self.aggregate_persons: list[dict] = []
 
+        # this combines all self.all_pronouns lists from multiple loop iterations in self.deidentify()
+        self.aggregate_pronouns: list[dict] = []
+
         self.all_pronouns: list[dict] = []
         self.doc: Optional[Doc] = None
         self.table_class  = None
@@ -139,6 +142,7 @@ class Deidentification:
                 self.__debug_log(f"deidentify(): next iter, persons={len(self.all_persons)}")
             if persons_count == 0:
                 break
+            self.aggregate_pronouns.extend(self.all_pronouns)
             self.all_pronouns = []
             merged = self._merge_metadata()
             replaced_text = self._replace_merged(replaced_text, merged)
@@ -167,7 +171,7 @@ class Deidentification:
         return buffer.getvalue()
 
     def get_identified_elements(self) -> dict:
-        elements = {"message": self.replaced_text, "entities": self.aggregate_persons, "pronouns": self.all_pronouns}
+        elements = {"message": self.replaced_text, "entities": self.aggregate_persons, "pronouns": self.aggregate_pronouns}
         return elements
 
     def _find_all_persons(self) -> int:

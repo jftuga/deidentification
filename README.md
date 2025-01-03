@@ -29,11 +29,6 @@ Download the required spaCy model:
 python -m spacy download en_core_web_trf
 ```
 
-For debugging, by setting `config.debug=True`, you will also need [VeryPrettyTable](https://github.com/smeggingsmegger/):
-```bash
-pip install VeryPrettyTable
-```
-
 ## Usage
 
 ### Command Line Interface
@@ -41,6 +36,8 @@ pip install VeryPrettyTable
 The package includes a command-line tool for quick de-identification of text files:
 
 ```bash
+deidentify input_file [options]
+# or:
 python -m deidentification.deidentify input_file [options]
 ```
 
@@ -55,7 +52,7 @@ Options:
 Example:
 ```bash
 # De-identify a text file and save with HTML markup
-python -m deidentification.deidentify input.txt -H -o output.html -r "[REDACTED]"
+deidentify input.txt -H -o output.html -r "[REDACTED]"
 ```
 
 ### Python API Usage
