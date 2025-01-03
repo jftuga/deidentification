@@ -1,6 +1,6 @@
 pgmName = "deidentification"
 pgmUrl = "https://github.com/jftuga/deidentification"
-pgmVersion = "1.1.2"
+pgmVersion = "1.2.0"
 
 GENDER_PRONOUNS = {
     "he": "HE/SHE",
@@ -14,30 +14,6 @@ GENDER_PRONOUNS = {
     "mr.": "",
     "mrs.": "",
     "ms.": ""}
-
-# ALL_CONTRACTIONS = (
-#     "it",
-#     "that",
-#     "what",
-#     "there",
-#     "here",
-#     "let",
-#     "how",
-#     "where",
-#     "who",
-#     "when",
-#     "one",
-#     "somebody",
-#     "someone",
-#     "something",
-#     "nobody",
-#     "everyone",
-#     "anybody",
-#     "nothing",
-#     "why",
-#     "this",
-#     "which")
-
 
 HTML_BEGIN = """<!DOCTYPE html>
 <html>
@@ -81,4 +57,3 @@ class bcolors:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
-
