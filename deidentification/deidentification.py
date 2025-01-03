@@ -125,6 +125,7 @@ class Deidentification:
         if self.config.debug:
             self.__debug_log(f"deidentify(): first iter, persons={len(self.all_persons)}")
         self._find_all_pronouns()
+        self.aggregate_pronouns.extend(self.all_pronouns)
 
         if self.config.debug:
             self.__print_entities_table(self.all_persons)
@@ -142,7 +143,6 @@ class Deidentification:
                 self.__debug_log(f"deidentify(): next iter, persons={len(self.all_persons)}")
             if persons_count == 0:
                 break
-            self.aggregate_pronouns.extend(self.all_pronouns)
             self.all_pronouns = []
             merged = self._merge_metadata()
             replaced_text = self._replace_merged(replaced_text, merged)
