@@ -89,7 +89,12 @@ class Deidentification:
             torch.load = self.__safe_load
             spacy.prefer_gpu()
             if not Deidentification.nlp:
-                Deidentification.nlp = spacy.load(self.config.spacy_model)
+                try:
+                    Deidentification.nlp = spacy.load(self.config.spacy_model)
+                except OSError as err:
+                    self.model_not_found_error(str(err))
+                except Exception as err:
+                    raise err
 
     def __str__(self) -> str:
         """Return a string representation of the Deidentification instance.
@@ -106,6 +111,26 @@ class Deidentification:
             f"- {'url':<15} = {pgmUrl}",
         ]
         return "\n".join(program_info) + "\n" + str(self.config)
+
+    def model_not_found_error(self, err: str):
+        """Handles errors related to missing spaCy models and provides installation instructions.
+
+        This function processes spaCy model errors, specifically handling cases where
+        a required model cannot be found. If the error indicates a missing model,
+        it prints installation instructions to stderr and exits the program.
+
+        Args:
+            err: Error message string from the spaCy library.
+        """
+        print(file=sys.stderr)
+        print(str(err), file=sys.stderr)
+        if "Can't find model" in str(err):
+            print(file=sys.stderr)
+            print("Please manually run the following command one time to download the required model:", file=sys.stderr)
+            print(file=sys.stderr)
+            print(f"python -m spacy download {self.config.spacy_model}", file=sys.stderr)
+            print(file=sys.stderr)
+            sys.exit(1)
 
     def deidentify(self, text: str) -> str:
         """De-identify personal information in the input text.
