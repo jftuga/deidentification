@@ -85,13 +85,13 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         description="De-identify personally identifiable information in text files"
     )
-    
+
     parser.add_argument(
         "input_file",
         help="text file to deidentify (use '-' for STDIN)",
         metavar="input_file"
     )
-    
+
     parser.add_argument(
         "-r",
         "--replacement",
@@ -99,21 +99,21 @@ def main() -> int:
         help="a word/phrase to replace identified names with (default: PERSON)",
         metavar="REPLACEMENT"
     )
-    
+
     parser.add_argument(
         "-o",
         "--output",
         help="output file (if not specified, prints to STDOUT)",
         metavar="OUTPUT_FILE"
     )
-    
+
     parser.add_argument(
         "-H",
         "--html",
         action="store_true",
         help="output in HTML format"
     )
-    
+
     parser.add_argument(
         "-v",
         "--version",

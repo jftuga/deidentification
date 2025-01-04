@@ -15,13 +15,16 @@ A Python module that removes personally identifiable information (PII) from text
 ## Installation
 
 ```bash
+pip install text-deidentification
+
+# or...
+
 pip install git+https://github.com/jftuga/deidentification.git
 ```
 
 ### Requirements
 
-- Python 3.7 or higher
-- spaCy
+- Python 3.10 or higher
 - spaCy's `en_core_web_trf` model (or another compatible model)
 
 Download the required spaCy model:
