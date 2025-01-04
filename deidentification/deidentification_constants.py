@@ -1,6 +1,6 @@
 pgmName = "deidentification"
 pgmUrl = "https://github.com/jftuga/deidentification"
-pgmVersion = "1.2.0"
+pgmVersion = "1.2.1"
 
 GENDER_PRONOUNS = {
     "he": "HE/SHE",
