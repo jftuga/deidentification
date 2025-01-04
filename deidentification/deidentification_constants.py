@@ -1,8 +1,19 @@
+from enum import Enum
+
 pgmName = "deidentification"
 pgmUrl = "https://github.com/jftuga/deidentification"
 pgmVersion = "1.2.1"
 
-GENDER_PRONOUNS = {
+# the maps the default replacement word for each language
+class DeidentificationLanguages(Enum):
+    ENGLISH = "PERSON"
+
+class DeidentificationOutputStyle(Enum):
+    TEXT = "text"
+    HTML = "html"
+
+GENDER_PRONOUNS = {}
+GENDER_PRONOUNS[DeidentificationLanguages.ENGLISH] = {
     "he": "HE/SHE",
     "him": "HIM/HER",
     "his": "HIS/HER",

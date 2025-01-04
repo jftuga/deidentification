@@ -22,29 +22,24 @@ replacements. The module supports both plain text and HTML output formats, with 
 providing visual highlighting of replacements through span tags.
 """
 
-
 from dataclasses import dataclass, fields
-from enum import Enum
 from io import StringIO
 from operator import itemgetter
 from typing import Any, BinaryIO, Optional, Union
 from .deidentification_constants import bcolors, GENDER_PRONOUNS, HTML_BEGIN, HTML_END
-from .deidentification_constants import pgmName, pgmUrl, pgmVersion
+from .deidentification_constants import pgmName, pgmUrl, pgmVersion, DeidentificationOutputStyle, DeidentificationLanguages
 from .normalize_punctuation import normalize_punctuation
 import spacy
 from spacy.tokens import Doc
 import sys
-
-class DeidentificationOutputStyle(Enum):
-    TEXT = "text"
-    HTML = "html"
 
 @dataclass
 class DeidentificationConfig:
     spacy_load: bool = True
     spacy_model: str = "en_core_web_trf"
     output_style: DeidentificationOutputStyle = DeidentificationOutputStyle.TEXT
-    replacement: str = "PERSON"
+    language: DeidentificationLanguages = DeidentificationLanguages.ENGLISH
+    replacement: str = DeidentificationLanguages.ENGLISH.value
     debug: bool = False
     save_tokens: bool = False
     filename: Optional[str] = None
@@ -126,7 +121,7 @@ class Deidentification:
         print(str(err), file=sys.stderr)
         if "Can't find model" in str(err):
             print(file=sys.stderr)
-            print("Please manually run the following command one time to download the required model:", file=sys.stderr)
+            print("Please manually run the following command one time to download the required 500 MB model:", file=sys.stderr)
             print(file=sys.stderr)
             print(f"python -m spacy download {self.config.spacy_model}", file=sys.stderr)
             print(file=sys.stderr)
@@ -239,7 +234,8 @@ class Deidentification:
         # Clear out any previous pronouns
         self.all_pronouns = []
 
-        gender_keys = GENDER_PRONOUNS.keys()
+        # self.config.language equals something like: DeidentificationLanguages.ENGLISH
+        gender_keys = GENDER_PRONOUNS[self.config.language].keys()
         for token in self.doc:
             if (token.pos_ == "PRON" or token.pos_ == "PROPN") and token.text.lower() in gender_keys:
                 record = {"text": token.text, "start_char": token.idx, "end_char": token.idx + len(token.text) - 1, "label": token.pos_, "shapes": [token.shape_]}
@@ -345,7 +341,7 @@ class Deidentification:
             if obj["type"] == "pronoun":
                 start = obj["item"]["start_char"]
                 end = start + len(obj["item"]["text"])
-                anon = GENDER_PRONOUNS[obj["item"]["text"].lower()]
+                anon = GENDER_PRONOUNS[self.config.language][obj["item"]["text"].lower()]
                 if want_html and len(anon):
                     anon = f'<span id="span1">{anon}</span>'
                 replaced_text = replaced_text[:start] + anon + replaced_text[end:]
