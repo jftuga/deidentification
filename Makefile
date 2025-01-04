@@ -43,7 +43,6 @@ clean:
 	rm -rf dist/
 	rm -rf *.egg-info/
 	rm -rf $(VENV_NAME)/
-	rm -rf __pycache__/
 	rm -rf test-install-venv/
 	rm -f *.whl.metadata .??*~
 	find . -type d -name "__pycache__" -exec rm -r "{}" +
