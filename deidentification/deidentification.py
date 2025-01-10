@@ -60,20 +60,10 @@ class Deidentification:
                 de-identification process. Defaults to DeidentificationConfig().
         """
         self.config = config
-        self.all_persons: list[dict] = []
+        if self.config.excluded_entities is not None:
+            self.config.excluded_entities = {entity.lower() for entity in self.config.excluded_entities}
 
-        # this combines all self.all_persons lists from multiple passes of self._find_all_persons()
-        self.aggregate_persons: list[dict] = []
-
-        # this combines all self.all_pronouns lists from multiple loop iterations in self.deidentify()
-        self.aggregate_pronouns: list[dict] = []
-
-        self.all_pronouns: list[dict] = []
-        self.doc: Optional[Doc] = None
         self.table_class  = None
-
-        # used by self.get_identified_elements()
-        self.replaced_text = None
 
         if self.config.debug:
             from veryprettytable import VeryPrettyTable
@@ -91,6 +81,35 @@ class Deidentification:
                     self.model_not_found_error(str(err))
                 except Exception as err:
                     raise err
+
+    def _reset(self):
+        """Resets all instance variables to their initial state.
+
+        Initializes or clears various tracking lists and document references used during
+        the deidentification process. This includes lists for storing person mentions,
+        pronouns, and the spaCy Doc object.
+
+        Attributes:
+            all_persons (list[dict]): Stores person entities found in current pass.
+            aggregate_persons (list[dict]): Accumulates person entities across multiple passes.
+            aggregate_pronouns (list[dict]): Accumulates pronouns across multiple deidentification iterations.
+            all_pronouns (list[dict]): Stores pronouns found in current pass.
+            doc (Optional[Doc]): Reference to the spaCy Doc object being processed.
+            replaced_text (Optional[str]): Stores the text after replacement operations.
+        """
+        self.all_persons: list[dict] = []
+
+        # this combines all self.all_persons lists from multiple passes of self._find_all_persons()
+        self.aggregate_persons: list[dict] = []
+
+        # this combines all self.all_pronouns lists from multiple loop iterations in self.deidentify()
+        self.aggregate_pronouns: list[dict] = []
+
+        self.all_pronouns: list[dict] = []
+        self.doc: Optional[Doc] = None
+
+        # used by self.get_identified_elements()
+        self.replaced_text = None
 
     def __str__(self) -> str:
         """Return a string representation of the Deidentification instance.
@@ -140,6 +159,8 @@ class Deidentification:
         Returns:
             str: The de-identified text with personal information replaced.
         """
+        self._reset()
+
         self.text = normalize_punctuation(text)
         self.doc = Deidentification.nlp(self.text)
         initial_persons_count = self._find_all_persons()
