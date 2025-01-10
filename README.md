@@ -98,7 +98,7 @@ config = DeidentificationConfig(
     spacy_model="en_core_web_trf",
     output_style=DeidentificationOutputStyle.HTML,
     replacement="[REDACTED]",
-    excluded_entities=set("Joe Smith,Alice Jones"),
+    excluded_entities={"Joe Smith,Alice Jones"},
     debug=True
 )
 deidentifier = Deidentification(config)
