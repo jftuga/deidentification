@@ -50,6 +50,7 @@ Options:
 - `-H, --html`: Output in HTML format with highlighted replacements
 - `-d, --debug`: Enable debug mode
 - `-t, --tokens`: Save identified elements to a JSON file (filename--tokens.json)
+- `-x, --exclude EXCLUDE`: comma-delimited list of entities to exclude from de-identification; or change with `DEIDENTIFY_EXCLUDE_DELIM` env var
 - `-v, --version`: Display version information
 
 Example:
@@ -80,6 +81,10 @@ print(deidentified_text)
 html_output = deidentifier.deidentify_with_wrapped_html(text)
 ```
 
+### HTML Output Demo
+
+![deidentification html demo](deidentification-html-demo.png)
+
 ### Custom Configuration
 
 ```python
@@ -93,6 +98,7 @@ config = DeidentificationConfig(
     spacy_model="en_core_web_trf",
     output_style=DeidentificationOutputStyle.HTML,
     replacement="[REDACTED]",
+    excluded_entities=set("Joe Smith,Alice Jones"),
     debug=True
 )
 deidentifier = Deidentification(config)

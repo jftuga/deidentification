@@ -43,6 +43,7 @@ class DeidentificationConfig:
     debug: bool = False
     save_tokens: bool = False
     filename: Optional[str] = None
+    excluded_entities: set[str] = None
 
     def __str__(self) -> str:
         return "\n".join(f"- {field.name:<15} = {getattr(self, field.name)}"
@@ -209,7 +210,7 @@ class Deidentification:
         self.all_persons = []
 
         for ent in self.doc.ents:
-            if "PERSON" == ent.label_:
+            if "PERSON" == ent.label_ and ent.text.lower().strip() not in self.config.excluded_entities:
                 # When this function is run a second time, skip replacing PERSON
                 # this is done because sometimes not all persons are found only
                 # on one iteration by spaCy

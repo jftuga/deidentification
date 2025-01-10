@@ -2,7 +2,7 @@ from enum import Enum
 
 pgmName = "deidentification"
 pgmUrl = "https://github.com/jftuga/deidentification"
-pgmVersion = "1.2.1"
+pgmVersion = "1.3.0"
 
 # the maps the default replacement word for each language
 class DeidentificationLanguages(Enum):
