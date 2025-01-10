@@ -14,6 +14,8 @@ from .deidentification import Deidentification, DeidentificationConfig, Deidenti
 from .deidentification_constants import pgmUrl
 from .file_detection import read_file_with_detection
 
+DEIDENTIFY_EXCLUDE_DELIM = os.environ.get('DEIDENTIFY_EXCLUDE_DELIM', ",")
+
 def create_json_filename(input_file: str) -> str:
     """Creates the metadata JSON filename for a given input file.
 
@@ -138,14 +140,26 @@ def main() -> int:
         help="save identified elements to file ending in `--tokens.json`"
     )
 
+    parser.add_argument(
+        "-x",
+        "--exclude",
+        default=False,
+        help="comma-delimited list of entities to exclude from de-identification; or change with DEIDENTIFY_EXCLUDE_DELIM env var"
+    )
+
     args = parser.parse_args()
 
     # Configure deidentification settings
+    excluded_entities = set()
+    if args.exclude:
+        excluded_entities = set(entity.lower().strip() for entity in args.exclude.split(DEIDENTIFY_EXCLUDE_DELIM))
+
     config = DeidentificationConfig(
         replacement=args.replacement,
         output_style=DeidentificationOutputStyle.HTML if args.html else DeidentificationOutputStyle.TEXT,
         debug = args.debug == True,
-        save_tokens = args.tokens == True
+        save_tokens = args.tokens == True,
+        excluded_entities = excluded_entities
     )
 
     try:
