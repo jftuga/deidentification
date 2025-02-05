@@ -432,11 +432,11 @@ class Deidentification:
 
         for ent in data:
             table_entities.add_row([
-                f"{bcolors.OKGREEN}{ent["text"]}{bcolors.ENDC}",
-                f"{bcolors.OKCYAN}{ent["start_char"]}{bcolors.ENDC}",
-                f"{bcolors.OKBLUE}{ent["end_char"]}{bcolors.ENDC}",
-                f"{bcolors.FAIL}{ent["label"]}{bcolors.ENDC}",
-                f"{bcolors.WARNING}{" ".join(ent["shapes"])}{bcolors.ENDC}",
+                f"{bcolors.OKGREEN}{ent['text']}{bcolors.ENDC}",
+                f"{bcolors.OKCYAN}{ent['start_char']}{bcolors.ENDC}",
+                f"{bcolors.OKBLUE}{ent['end_char']}{bcolors.ENDC}",
+                f"{bcolors.FAIL}{ent['label']}{bcolors.ENDC}",
+                f"{bcolors.WARNING}{' '.join(ent['shapes'])}{bcolors.ENDC}",
             ])
         print(table_entities, file=sys.stderr)
 
