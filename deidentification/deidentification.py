@@ -261,6 +261,16 @@ class Deidentification:
         for token in self.doc:
             if (token.pos_ == "PRON" or token.pos_ == "PROPN") and token.text.lower() in gender_keys:
                 record = {"text": token.text, "start_char": token.idx, "end_char": token.idx + len(token.text) - 1, "label": token.pos_, "shapes": [token.shape_]}
+
+                # Special handling for 'her' based on its POS tag in spaCy
+                if token.text.lower() == "her":
+                    # DET = determiner (possessive in this case)
+                    # PRON = pronoun (object in this case)
+                    if token.pos_ == "DET" or token.tag_ == "PRP$":
+                        custom_replacement = "her"  # possessive determiner
+                    else:
+                        custom_replacement = "obj_her"  # object pronoun
+                    record["custom_replacement"] = custom_replacement
                 self.all_pronouns.append(record)
         return len(self.all_pronouns)
 
@@ -363,7 +373,8 @@ class Deidentification:
             if obj["type"] == "pronoun":
                 start = obj["item"]["start_char"]
                 end = start + len(obj["item"]["text"])
-                anon = GENDER_PRONOUNS[self.config.language][obj["item"]["text"].lower()]
+                key = "custom_replacement" if "custom_replacement" in obj["item"] else "text"
+                anon = GENDER_PRONOUNS[self.config.language][obj["item"][key].lower()]
                 if want_html and len(anon):
                     anon = f'<span id="span1">{anon}</span>'
                 replaced_text = replaced_text[:start] + anon + replaced_text[end:]
@@ -432,11 +443,11 @@ class Deidentification:
 
         for ent in data:
             table_entities.add_row([
-                f"{bcolors.OKGREEN}{ent['text']}{bcolors.ENDC}",
-                f"{bcolors.OKCYAN}{ent['start_char']}{bcolors.ENDC}",
-                f"{bcolors.OKBLUE}{ent['end_char']}{bcolors.ENDC}",
-                f"{bcolors.FAIL}{ent['label']}{bcolors.ENDC}",
-                f"{bcolors.WARNING}{' '.join(ent['shapes'])}{bcolors.ENDC}",
+                f"""{bcolors.OKGREEN}{ent["text"]}{bcolors.ENDC}""",
+                f"""{bcolors.OKCYAN}{ent["start_char"]}{bcolors.ENDC}""",
+                f"""{bcolors.OKBLUE}{ent["end_char"]}{bcolors.ENDC}""",
+                f"""{bcolors.FAIL}{ent["label"]}{bcolors.ENDC}""",
+                f"""{bcolors.WARNING}{" ".join(ent["shapes"])}{bcolors.ENDC}""",
             ])
         print(table_entities, file=sys.stderr)
 
