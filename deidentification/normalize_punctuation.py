@@ -8,6 +8,7 @@ def normalize_punctuation(text: str) -> str:
     - Converts ellipsis character to three periods
     - Converts various spaces to regular space
     - Converts bullet points to asterisk
+    - Converts fraction symbols (like ½) to ASCII representations (like 1/2)
     - Preserves but normalizes common symbols (©, ®, ™)
 
     Args:
@@ -63,6 +64,13 @@ def normalize_punctuation(text: str) -> str:
         chr(0x00B7): '*',  # MIDDLE DOT
         chr(0x2219): '*',  # BULLET OPERATOR
 
+        # Fraction characters
+        chr(0x00BD): ' 1/2',  # FRACTION ONE HALF (½)
+        chr(0x00BC): ' 1/4',  # FRACTION ONE QUARTER
+        chr(0x00BE): ' 3/4',  # FRACTION THREE QUARTERS
+        chr(0x2153): ' 1/3',  # FRACTION ONE THIRD
+        chr(0x2154): ' 2/3',  # FRACTION TWO THIRDS
+
         # Normalize common symbols
         chr(0x00A9): '(c)',  # COPYRIGHT SIGN
         chr(0x00AE): '(r)',  # REGISTERED SIGN
@@ -75,3 +83,4 @@ def normalize_punctuation(text: str) -> str:
         normalized_text = normalized_text.replace(unicode_char, ascii_char)
 
     return normalized_text
+
