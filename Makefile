@@ -60,7 +60,7 @@ test-install: clean
 # Production PyPI targets
 prod-publish: clean check-pypirc $(VENV_NAME) build
 	@echo "Are you sure you want to publish to production PyPI? [y/N] " && read ans && [ $${ans:-N} = y ]
-	./$(VENV_NAME)/bin/twine --verbose upload dist/*
+	./$(VENV_NAME)/bin/twine upload --verbose dist/*
 
 prod-install: clean
 	$(PYTHON) -m venv prod-install-venv
